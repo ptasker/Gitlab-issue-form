@@ -1,0 +1,17 @@
+{{#if user }}
+
+    <h2>Hello, {{ user.fullname }}.</h2>
+
+    <p><a href="/social/twitter">Get latest Twitter posts</a></p>
+
+    {{#if user.auth_data }}
+        <!--<p><a href="/social/facebook">Get latest Facebook posts</a></p>-->
+        <p><a href="/social/twitter">Get latest Twitter posts</a></p>
+    {{else}}
+        <p><a href="/auth/facebook">Connect Facebook</a></p>
+        <!--<p><a href="/auth/twitter">Connect Twitter</a></p>-->
+    {{/if}}
+
+{{/if}}
+
+

@@ -1,0 +1,53 @@
+<h1>
+
+    <h1>High Road Bug form</h1>
+
+
+    <form action="" method="post">
+
+        <p>
+            <label for="project">
+                Project:
+            </label>
+            <br/>
+            <select id="project" name="project">
+                {{#each projects}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </p>
+
+        <p>
+            <label for="title">
+                Title:
+            </label>
+            <br/>
+            <input type="text" id="title" name="title"/>
+        </p>
+
+        <p>
+            <label for="assign">
+                Assign to:
+            </label>
+            <br/>
+            <select id="assign" name="assign">
+                {{#each users}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </p>
+
+        <p>
+            <label for="title">
+                Due date:
+            </label>
+            <br/>
+            <input type="text" id="date" name="date" class="datepicker"/>
+        </p>
+
+        <input type="submit" value="Submit issue"/>
+
+    </form>
+
+
+</h1>
