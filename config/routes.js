@@ -6,15 +6,13 @@ module.exports.initialize = function (app, router) {
 
     router.get('/', controller.index);
 
+    router.post('/create', controller.createIssue);
 
     router.get('/epic-fail', function (req, res) {
         process.nextTick(function () {
             throw new Error('Kaboom!');
         });
     });
-
-
-
 
     app.use('/', router);
 

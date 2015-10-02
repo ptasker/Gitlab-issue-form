@@ -2,8 +2,16 @@
 
     <h1>High Road Bug form</h1>
 
+    {{#if msg}}
 
-    <form action="" method="post">
+        <div>
+            <p>{{msg}}</p>
+        </div>
+
+
+    {{/if}}
+
+    <form action="/create" method="post">
 
         <p>
             <label for="project">
@@ -24,6 +32,15 @@
             <br/>
             <input type="text" id="title" name="title"/>
         </p>
+
+        <p>
+            <label for="description">
+                Description:
+            </label>
+            <br/>
+            <textarea id="description" name="description"></textarea>
+        </p>
+
 
         <p>
             <label for="assign">

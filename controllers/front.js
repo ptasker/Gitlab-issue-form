@@ -1,100 +1,109 @@
-    /**
+/**
 
-      =============================================
+ =============================================
 
-      Main controller for the views of the app
+ Main controller for the views of the app
 
-      =============================================
+ =============================================
 
-      **/
-
-
-     var request = require('request');
+ **/
 
 
-      module.exports = {
+var request = require('request');
 
-        index: function (req, res) {
+// Connection
+var gitlab = require('gitlab')({
+    url  : 'https://gitlab.com/api/v3',
+    token: 'qb3ZBd7xzNm_HWzg3jRX'
+});
+var flash = require('connect-flash');
 
-            var gitlab = require('gitlab');
+module.exports = {
 
-            // Connection
-            var gitlab = require('gitlab')({
-                url:   'https://gitlab.com/api/v3',
-                token: 'qb3ZBd7xzNm_HWzg3jRX'
-            });
+    index: function (req, res) {
 
-            //var client = gitlab.createPromise({
-            //    api: 'https://gitlab.com/api/v3',
-            //    privateToken: 'qb3ZBd7xzNm_HWzg3jRX'
-            //});
+        gitlab.projects.all({}, function (projects) {
 
-            //console.log(client.projects.list({}));
+            console.log(projects);
 
-            gitlab.projects.all({ }, function (projects) {
-                console.log(projects);
+            var that = this;
 
-                var that = this;
+            that.projects = projects;
 
-                that.projects = projects;
+            gitlab.groups.listMembers(227762, function (users) {
 
-                gitlab.groups.listMembers(227762, function(users){
+                console.log(users);
 
-
-                    console.log(users);
-                    res.render('home', {
-                        "projects" : that.projects,
-                        "users" : users
-                    });
-
+                res.render('home', {
+                    "projects": that.projects,
+                    "users"   : users,
+                    "msg" : req.flash('info')
                 });
 
-
-
             });
 
 
+        });
+
+
+    },
 
 
 
-          
-        },
+    createIssue: function (req, res) {
+
+        if (req.body.project == ""
+            || req.body.title == ""
+            || req.body.description == ""
+            || req.body.assign == "") {
+
+            req.flash('info', 'Please complete all the fields');
+            res.redirect(303, '/');
 
 
+        } else {
 
-        createuserform : function(req, res){
+            var pid = req.body.project;
 
-         res.render('userform');
-
-       },
-
-       createuser : function ( req, res ){
-
-        if (req.body.username == ""
-          || req.body.fullname == ""
-          || req.body.email == ""
-          || req.body.password == "") {
-
-          res.render('userform', {msg: "Please fill out all the fields."});
-
-        return;
-      }
+            var params = {
+                id : pid,
+                title: req.body.title,
+                description: req.body.description,
+                assignee_id: req.body.assign
+            };
 
 
+            gitlab.issues.create(pid, params, function(err, resp){
+                console.log(err, resp);
+
+                //res.render('home', {msg: "Issue submitted"});
+
+                req.flash('info', "Issue submitted");
+                res.redirect(303, '/');
+
+            });
+
+        }
+    },
+
+
+    createuserform: function (req, res) {
+
+        res.render('userform');
 
     },
 
     json: function (req, res) {
 
-      res.json({ user: 'tobi' });
+        res.json({user: 'tobi'});
 
     },
 
     jsonp: function (req, res) {
 
-      res.jsonp({ user: req.params.name });
+        res.jsonp({user: req.params.name});
 
     },
 
 
-  };
+};
