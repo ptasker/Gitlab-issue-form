@@ -16,7 +16,7 @@ var gitlab = require('gitlab')({
     url  : 'https://gitlab.com/api/v3',
     token: 'qb3ZBd7xzNm_HWzg3jRX'
 });
-var flash = require('connect-flash');
+var flash  = require('connect-flash');
 
 module.exports = {
 
@@ -24,20 +24,19 @@ module.exports = {
 
         gitlab.projects.all({}, function (projects) {
 
-            console.log(projects);
+            //console.log(projects);
 
-            var that = this;
-
+            var that      = this;
             that.projects = projects;
 
             gitlab.groups.listMembers(227762, function (users) {
 
-                console.log(users);
+                //console.log(users);
 
                 res.render('home', {
                     "projects": that.projects,
                     "users"   : users,
-                    "msg" : req.flash('info')
+                    "msg"     : req.flash('info')
                 });
 
             });
@@ -48,6 +47,32 @@ module.exports = {
 
     },
 
+    getMilestones: function (req, res) {
+
+        var self = this;
+
+        if (req.body.project_id == "") {
+            req.flash('info', 'Please complete all the fields');
+            res.redirect(303, '/');
+        } else {
+
+
+            var pid = req.body.project_id;
+
+            console.log(pid);
+
+            gitlab.projects.milestones.all(pid, function (milestones) {
+                console.log("");
+                console.log("=== Milestones ===");
+                console.log(milestones);
+
+                return res.json(milestones);
+            });
+
+
+        }
+
+    },
 
 
     createIssue: function (req, res) {
@@ -66,15 +91,15 @@ module.exports = {
             var pid = req.body.project;
 
             var params = {
-                id : pid,
-                title: req.body.title,
+                id         : pid,
+                title      : req.body.title,
                 description: req.body.description,
                 assignee_id: req.body.assign
             };
 
 
-            gitlab.issues.create(pid, params, function(err, resp){
-                console.log(err, resp);
+            gitlab.issues.create(pid, params, function (err, resp) {
+                //console.log(err, resp);
 
                 //res.render('home', {msg: "Issue submitted"});
 
@@ -86,24 +111,55 @@ module.exports = {
         }
     },
 
+    createMilestone: function (req, res) {
+
+        if (req.body.project_id == ""
+            || req.body.milestone_title == ""
+            || req.body.milestone_desc == ""
+            || req.body.due_date == "") {
+
+            req.flash('info', 'Please complete all the fields');
+
+            //res.redirect(303, '/');
+
+        } else {
+
+            var params = {
+                id         : req.body.project_id,
+                title      : req.body.milestone_title,
+                description: req.body.milestone_desc,
+                due_date   : req.body.due_date
+            };
+
+            gitlab.projects.milestones.add(params.id, params.title, params.description, params.due_date, function (err, resp) {
+
+
+
+
+            });
+        }
+    },
 
     createuserform: function (req, res) {
 
         res.render('userform');
 
-    },
+    }
+    ,
 
     json: function (req, res) {
 
         res.json({user: 'tobi'});
 
-    },
+    }
+    ,
 
     jsonp: function (req, res) {
 
         res.jsonp({user: req.params.name});
 
-    },
+    }
+    ,
 
 
 };

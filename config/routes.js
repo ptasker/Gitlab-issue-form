@@ -8,6 +8,8 @@ module.exports.initialize = function (app, router) {
 
     router.post('/create', controller.createIssue);
 
+    router.post('/milestones', controller.getMilestones);
+
     router.get('/epic-fail', function (req, res) {
         process.nextTick(function () {
             throw new Error('Kaboom!');

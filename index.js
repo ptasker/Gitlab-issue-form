@@ -6,6 +6,7 @@ app = express();
 app = configure(app);
 
 
+
 //NODE_ENV=development nodemon index.js
 function startServer() {
     app.listen(app.get('port'), function () {

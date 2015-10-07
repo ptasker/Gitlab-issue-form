@@ -101,8 +101,18 @@ module.exports = function (app) {
      * Init Routes
      *
      *
-
      */
+
+    /**
+     *
+     * CALL STATIC FOLDERS BEFORE ROUTER
+     *
+     */
+    //Static folder
+    app.use(
+        express.static( 'public')
+    );
+
 
     routes.initialize(app, new express.Router());
 
@@ -127,10 +137,12 @@ module.exports = function (app) {
 
     app.set('port', process.env.PORT || 3000);
 
-    //Static folder
-    app.use(
-        express.static(__dirname + '/public')
-    );
+
+
+    ////Static folder
+    //app.use(
+    //    express.static( __dirname + '/../public')
+    //);
 
 
     /**
