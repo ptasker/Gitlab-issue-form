@@ -1,11 +1,24 @@
 <div class="container">
+    <div class="masthead">
+        <h3>High Road Bugs</h3>
+        <!--<nav>-->
+            <!--<ul class="nav nav-justified">-->
+                <!--<li class="active"><a href="#">Home</a></li>-->
+                <!--<li><a href="#">Projects</a></li>-->
+                <!--<li><a href="#">Services</a></li>-->
+                <!--<li><a href="#">Downloads</a></li>-->
+                <!--<li><a href="#">About</a></li>-->
+                <!--<li><a href="#">Contact</a></li>-->
+            <!--</ul>-->
+        <!--</nav>-->
+    </div>
     <!-- Jumbotron -->
-    <div class="jumbotron">
-        <h1>High Road Bug form</h1>
+    <div class="jumbotron bg-info">
+        <h2>Important message here</h2>
 
         <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
 
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
+        <!--<p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>-->
 
     </div>
     {{#if msg}}
@@ -19,7 +32,7 @@
     <div class="row">
         <div class="col-md-8">
 
-            <form action="/create" method="post" class="form-horizontal">
+            <form action="/create" method="post" class="">
 
                 <div class="form-group">
                     <label for="project" class="control-label">
@@ -27,15 +40,12 @@
                     </label>
                     <br/>
                     <select id="project" name="project" class="form-control">
+                        <option value="">Select a project...</option>
                         {{#each projects}}
                             <option value="{{this.id}}">{{this.name}}</option>
                         {{/each}}
                     </select>
                 </div>
-
-                <p>
-
-                </p>
 
                 <div class="form-group">
                     <label for="title" class="control-label">
@@ -75,29 +85,33 @@
                     <select id="milestone" name="milestone" class="form-control">
                         <option value="">Select a project first...</option>
                     </select>
+
                     <p>
                         OR
                     </p>
-                    <!--<a href="#">Create a new milestone</a>-->
-
-
-
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                         Create a new milestone
                     </button>
-
-
 
                 </div>
 
 
+                <div class="form-group">
+                    <label for="time" class="control-label">
+                        Time due:
+                    </label>
+                    <br/>
+                    <input type="text" id="time" name="time" class="form-control timepicker"/>
+
+                </div>
+
                 <!--<div class="form-group">-->
-                    <!--<label for="date" class="control-label">-->
-                        <!--Due date:-->
-                    <!--</label>-->
-                    <!--<br/>-->
-                    <!--<input type="text" id="date" name="date" class="datepicker form-control"/>-->
+                <!--<label for="date" class="control-label">-->
+                <!--Due date:-->
+                <!--</label>-->
+                <!--<br/>-->
+                <!--<input type="text" id="date" name="date" class="datepicker form-control"/>-->
                 <!--</div>-->
 
                 <input type="submit" value="Submit issue" class="btn btn-lg btn-primary"/>
@@ -116,19 +130,52 @@
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <form action="/createmilestone" method="post" class="form-horizontal" id="add-milestone-form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add new Milestone</h4>
+                </div>
+                <div class="modal-body">
+
+                    <span class="msg"></span>
+                    <div class="form-group">
+                        <label for="title" class="control-label">
+                            Title:
+                        </label>
+                        <br/>
+                        <input type="text" id="title" name="title" class="form-control"/>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="control-label">
+                            Description:
+                        </label>
+                        <br/>
+                        <textarea id="description" name="description" class="form-control"></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="date" class="control-label">
+                            Due date:
+                        </label>
+                        <br/>
+                        <input type="text" id="date" name="date" class="datepicker form-control"/>
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                    <input type="submit" value="Save Milestone" class="btn btn-primary"/>
+                </div>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 

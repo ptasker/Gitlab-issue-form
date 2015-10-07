@@ -9,6 +9,7 @@ module.exports.initialize = function (app, router) {
     router.post('/create', controller.createIssue);
 
     router.post('/milestones', controller.getMilestones);
+    router.post('/createmilestone', controller.createMilestone);
 
     router.get('/epic-fail', function (req, res) {
         process.nextTick(function () {

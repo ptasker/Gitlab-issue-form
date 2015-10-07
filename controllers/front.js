@@ -10,7 +10,7 @@
 
 
 var request = require('request');
-
+var moment  = require('moment');
 // Connection
 var gitlab = require('gitlab')({
     url  : 'https://gitlab.com/api/v3',
@@ -88,12 +88,22 @@ module.exports = {
 
         } else {
 
-            var pid = req.body.project;
+            var pid      = req.body.project;
+            var title    = req.body.title;
+            var time_due = req.body.time;
+            var desc     = req.body.description;
 
-            var params = {
+            if (time_due) {
+                var time_str = '** Time Due: ' + time_due + '**';
+                title += " " + time_str;
+                desc         = time_str + '\n\n' + desc;
+            }
+
+            console.log(title, desc);
+            var params   = {
                 id         : pid,
-                title      : req.body.title,
-                description: req.body.description,
+                title      : title,
+                description: desc,
                 assignee_id: req.body.assign
             };
 
@@ -120,21 +130,24 @@ module.exports = {
 
             req.flash('info', 'Please complete all the fields');
 
-            //res.redirect(303, '/');
+            return res.json("err");
 
         } else {
+
+            var due_date = moment(req.body.due_date).format('YYYY-MM-DD');
 
             var params = {
                 id         : req.body.project_id,
                 title      : req.body.milestone_title,
                 description: req.body.milestone_desc,
-                due_date   : req.body.due_date
+                due_date   : due_date
             };
 
-            gitlab.projects.milestones.add(params.id, params.title, params.description, params.due_date, function (err, resp) {
+            gitlab.projects.milestones.add(params.id, params.title, params.description, params.due_date, function (resp) {
 
 
-
+                console.log(resp);
+                return res.json(resp);
 
             });
         }
@@ -151,8 +164,7 @@ module.exports = {
 
         res.json({user: 'tobi'});
 
-    }
-    ,
+    },
 
     jsonp: function (req, res) {
 
