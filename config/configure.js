@@ -6,9 +6,10 @@ var express      = require("express"),
     fs           = require('fs'),
     _            = require('underscore'),
     formidable   = require('formidable'),
+    busboy       = require('connect-busboy'),
     routes       = require('./routes');
 
-
+require('dotenv').load();
 module.exports = function (app) {
 
 
@@ -103,14 +104,16 @@ module.exports = function (app) {
      *
      */
 
+    app.use(busboy());
+
     /**
      *
      * CALL STATIC FOLDERS BEFORE ROUTER
      *
      */
-    //Static folder
+        //Static folder
     app.use(
-        express.static( 'public')
+        express.static('public')
     );
 
 
@@ -136,7 +139,6 @@ module.exports = function (app) {
 
 
     app.set('port', process.env.PORT || 3000);
-
 
 
     ////Static folder

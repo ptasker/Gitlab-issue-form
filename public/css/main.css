@@ -2,6 +2,10 @@ body{
     /*color: blue;*/
 }
 
+.container{
+    padding-bottom: 30px;
+}
+
 .modal-dialog{
     z-index:99999;
 }

@@ -2,14 +2,14 @@
     <div class="masthead">
         <h3>High Road Bugs</h3>
         <!--<nav>-->
-            <!--<ul class="nav nav-justified">-->
-                <!--<li class="active"><a href="#">Home</a></li>-->
-                <!--<li><a href="#">Projects</a></li>-->
-                <!--<li><a href="#">Services</a></li>-->
-                <!--<li><a href="#">Downloads</a></li>-->
-                <!--<li><a href="#">About</a></li>-->
-                <!--<li><a href="#">Contact</a></li>-->
-            <!--</ul>-->
+        <!--<ul class="nav nav-justified">-->
+        <!--<li class="active"><a href="#">Home</a></li>-->
+        <!--<li><a href="#">Projects</a></li>-->
+        <!--<li><a href="#">Services</a></li>-->
+        <!--<li><a href="#">Downloads</a></li>-->
+        <!--<li><a href="#">About</a></li>-->
+        <!--<li><a href="#">Contact</a></li>-->
+        <!--</ul>-->
         <!--</nav>-->
     </div>
     <!-- Jumbotron -->
@@ -23,7 +23,7 @@
     </div>
     {{#if msg}}
 
-        <div class="alert alert-dismissible alert-danger">
+        <div class="alert alert-dismissible alert-{{status}}">
             <button type="button" class="close" data-dismiss="alert">×</button>
             {{msg}}
         </div>
@@ -32,11 +32,14 @@
     <div class="row">
         <div class="col-md-8">
 
-            <form action="/create" method="post" class="">
+            <form action="/create" method="post" class="" enctype="multipart/form-data">
+                <p>
+                    <small>Fields marked with * are mandatory</small>
+                </p>
 
                 <div class="form-group">
                     <label for="project" class="control-label">
-                        Project:
+                        *Project:
                     </label>
                     <br/>
                     <select id="project" name="project" class="form-control">
@@ -49,7 +52,7 @@
 
                 <div class="form-group">
                     <label for="title" class="control-label">
-                        Title:
+                        *Title:
                     </label>
                     <br/>
                     <input type="text" id="title" name="title" class="form-control"/>
@@ -58,7 +61,7 @@
 
                 <div class="form-group">
                     <label for="description" class="control-label">
-                        Description:
+                        *Description:
                     </label>
                     <br/>
                     <textarea id="description" name="description" class="form-control"></textarea>
@@ -67,7 +70,7 @@
 
                 <div class="form-group">
                     <label for="assign" class="control-label">
-                        Assign to:
+                        *Assign to:
                     </label>
                     <br/>
                     <select id="assign" name="assign" class="form-control">
@@ -106,6 +109,14 @@
 
                 </div>
 
+
+                <div class="form-group">
+                    <label for="sreenshot" class="control-label">
+                        Screenshot <small>(max file size 10MB)</small>:
+                    </label>
+                    <input type="file" class="form-control" accept="image/*" id="screenshot" name="screenshot" capture="camera"/>
+
+                </div>
                 <!--<div class="form-group">-->
                 <!--<label for="date" class="control-label">-->
                 <!--Due date:-->
@@ -139,6 +150,7 @@
                 <div class="modal-body">
 
                     <span class="msg"></span>
+
                     <div class="form-group">
                         <label for="title" class="control-label">
                             Title:
@@ -164,8 +176,6 @@
                         <br/>
                         <input type="text" id="date" name="date" class="datepicker form-control"/>
                     </div>
-
-
 
 
                 </div>

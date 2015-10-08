@@ -1,7 +1,7 @@
 var express = require('express'),
     configure = require('./config/configure'),
     _ = require('underscore');
-
+require('dotenv').load();
 app = express();
 app = configure(app);
 

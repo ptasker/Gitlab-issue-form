@@ -23,7 +23,7 @@ $(function () {
 
                     $.each(response, function (i, ele) {
                         var due_date = !ele.due_date ? 'Due date not set' : "Due: " + ele.due_date;
-                        str += '<option value="' + ele.title + '">' + ele.title + ' - ' + due_date + '</option>';
+                        str += '<option value="' + ele.id + '">' + ele.title + ' - ' + due_date + '</option>';
                     });
 
                 } else {
