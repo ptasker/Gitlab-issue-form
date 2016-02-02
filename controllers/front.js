@@ -11,24 +11,24 @@
 
 var request    = require('request');
 var moment     = require('moment');
-var busboy     = require('connect-busboy');
 var formidable = require('formidable');
+var config     = require('../config/config');
 
 var cloudinary = require('cloudinary');
 //Config for cloudinary
 //http://cloudinary.com/documentation/node_image_manipulation#text_layers
 //http://cloudinary.com/documentation/upload_images#text_layers
 cloudinary.config({
-    cloud_name: 'dro6he6lr',
-    api_key   : '848221614325287',
-    api_secret: 'bx0PpkGT5lo3e74CuWIhMn29i_s'
+    cloud_name: config.get('cloudinary.cloudname'),
+    api_key   : config.get('cloudinary.api_key'),
+    api_secret: config.get('cloudinary.api_secret')
 });
 
 
 // Connection
 var gitlab = require('gitlab')({
     url  : 'https://gitlab.com/api/v3',
-    token: 'qb3ZBd7xzNm_HWzg3jRX'
+    token: config.get('gitlab.api_key')
 });
 var flash  = require('connect-flash');
 
@@ -233,8 +233,7 @@ module.exports = {
 
         res.render('userform');
 
-    }
-    ,
+    },
 
     json: function (req, res) {
 
@@ -247,7 +246,6 @@ module.exports = {
         res.jsonp({user: req.params.name});
 
     }
-    ,
 
 
 };
