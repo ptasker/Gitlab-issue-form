@@ -5,25 +5,17 @@ var controller = require('../controllers/front')
 module.exports.initialize = function (app, router) {
 
     router.get('/', controller.index);
-
     router.post('/create', controller.createIssue);
-
     router.post('/milestones', controller.getMilestones);
     router.post('/createmilestone', controller.createMilestone);
 
-    router.get('/epic-fail', function (req, res) {
-        process.nextTick(function () {
-            throw new Error('Kaboom!');
-        });
-    });
-
     app.use('/', router);
 
-    app.use(function (req, res) {
 
+    app.use(function (req, res) {
         res.type('text/plain');
         res.status(404);
-        res.send('404 - Not Found');
+        res.send('404 - Not Found...');
 
     });
 
@@ -34,6 +26,5 @@ module.exports.initialize = function (app, router) {
         res.status(500);
         res.send('500 - Server Error');
     });
-
-
+    
 };
