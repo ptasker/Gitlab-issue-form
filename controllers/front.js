@@ -69,15 +69,9 @@ module.exports = {
             res.redirect(303, '/');
         } else {
 
-
             var pid = req.body.project_id;
 
-            console.log(pid);
-
             gitlab.projects.milestones.all(pid, function (milestones) {
-                console.log("");
-                console.log("=== Milestones ===");
-                console.log(milestones);
 
                 return res.json(milestones);
             });
@@ -112,12 +106,6 @@ module.exports = {
 
 
                 if (err) return res.redirect(303, '/error');
-
-
-                console.log(fields);
-
-                console.log(files);
-
 
                 var pid      = fields.project;
                 var title    = fields.title;
@@ -183,11 +171,8 @@ module.exports = {
 
                     gitlab.issues.create(pid, params, function (resp) {
 
-
-                        console.log(resp);
                         req.flash('info', "Issue submitted");
                         res.redirect(303, '/');
-
                     });
                 }
 
@@ -221,31 +206,9 @@ module.exports = {
 
             gitlab.projects.milestones.add(params.id, params.title, params.description, params.due_date, function (resp) {
 
-
-                console.log(resp);
                 return res.json(resp);
 
             });
         }
-    },
-
-    createuserform: function (req, res) {
-
-        res.render('userform');
-
-    },
-
-    json: function (req, res) {
-
-        res.json({user: 'tobi'});
-
-    },
-
-    jsonp: function (req, res) {
-
-        res.jsonp({user: req.params.name});
-
     }
-
-
 };
