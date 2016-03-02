@@ -11,8 +11,11 @@ var express = require("express"),
 
 require('dotenv').load();
 
-module.exports = function(app) {
+var gitlab_projects = require('../middleware/gitlab/gitlab_projects');
+    // gitlab_users = require('../middleware/gitlab/gitlab_users');
 
+
+module.exports = function(app) {
 
   app.use(cookieParser('super-secret-key-here'));
 
@@ -118,6 +121,10 @@ module.exports = function(app) {
   );
 
 
+  app.use(gitlab_projects);
+  // app.use(gitlab_users);
+
+
   routes.initialize(app, new express.Router());
 
 
@@ -137,7 +144,6 @@ module.exports = function(app) {
   app.engine('handlebars', handlebars.engine);
   app.set('view engine', 'handlebars');
 
-
   app.set('port', process.env.PORT || 3000);
 
   /**
@@ -149,7 +155,6 @@ module.exports = function(app) {
   //     if (cluster.isWorker) console.log('Worker %d received request',
   //         cluster.worker.id);
   // });
-
 
   return app;
 

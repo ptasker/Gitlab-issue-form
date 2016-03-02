@@ -1,7 +1,6 @@
 var controller = require('../controllers/front')
     , flash = require('connect-flash');
 
-
 module.exports.initialize = function (app, router) {
 
     router.get('/', controller.index);
