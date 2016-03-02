@@ -41,7 +41,7 @@ module.exports = {
   index: function(req, res) {
     res.render('home', {
       "projects": req.app.locals.projects,
-      "users": res.locals.users,
+      "users": res.app.locals.users,
       "msg": req.flash('info'),
       "status": req.flash('status')
     });

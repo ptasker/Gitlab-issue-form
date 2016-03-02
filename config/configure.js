@@ -7,12 +7,13 @@ var express = require("express"),
   _ = require('underscore'),
   formidable = require('formidable'),
   busboy = require('connect-busboy'),
-  routes = require('./routes');
+  async = require('async')
+routes = require('./routes');
 
 require('dotenv').load();
 
-var gitlab_projects = require('../middleware/gitlab/gitlab_projects');
-    // gitlab_users = require('../middleware/gitlab/gitlab_users');
+var gitlabProjects = require('../middleware/gitlab/gitlab_projects'),
+  gitlabUsers = require('../middleware/gitlab/gitlab_users');
 
 
 module.exports = function(app) {
@@ -121,9 +122,19 @@ module.exports = function(app) {
   );
 
 
-  app.use(gitlab_projects);
-  // app.use(gitlab_users);
+  //Setup parallel loading of Gitlab data
+  function parallel(middlewares) {
+    return function(req, res, next) {
+      async.each(middlewares, function(mw, cb) {
+        mw(req, res, cb);
+      }, next);
+    };
+  }
 
+  app.use(parallel([
+    gitlabProjects,
+    gitlabUsers
+  ]));
 
   routes.initialize(app, new express.Router());
 
