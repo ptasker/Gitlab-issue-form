@@ -11,7 +11,6 @@ module.exports.initialize = function (app, router) {
 
     app.use('/', router);
 
-
     app.use(function (req, res) {
         res.type('text/plain');
         res.status(404);
@@ -26,5 +25,5 @@ module.exports.initialize = function (app, router) {
         res.status(500);
         res.send('500 - Server Error');
     });
-    
+
 };

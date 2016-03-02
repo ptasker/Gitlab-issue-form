@@ -128,7 +128,6 @@ module.exports = function(app) {
    * Setup view engine
    *
    *
-
    */
   var handlebars = require('express3-handlebars')
     .create({
