@@ -14,13 +14,8 @@ $(function () {
             },
 
             success: function (response) {
-
-                console.log(response);
-
                 if (response.length > 0) {
-
                     var str = '';
-
                     $.each(response, function (i, ele) {
                         var due_date = !ele.due_date ? 'Due date not set' : "Due: " + ele.due_date;
                         str += '<option value="' + ele.id + '">' + ele.title + ' - ' + due_date + '</option>';
@@ -31,7 +26,6 @@ $(function () {
                 }
 
                 $("#milestone").html(str);
-
             }
         });
     }
@@ -39,11 +33,11 @@ $(function () {
     $("#project").on("change", function () {
         var project_id = $(this).val();
         getMilestones(project_id);
+        $("#milestone-btn").prop("disabled", false);
     });
 
 
     $("#add-milestone-form").on("submit", function () {
-
 
         var title = $("#add-milestone-form #title").val();
         var desc  = $("#add-milestone-form #description").val();
@@ -70,16 +64,11 @@ $(function () {
 
             success: function (response) {
 
-                console.log(response);
-
                 $('#myModal').modal('hide');
                 getMilestones(response.project_id);
             }
         });
 
-
         return false;
-
     });
-
 });

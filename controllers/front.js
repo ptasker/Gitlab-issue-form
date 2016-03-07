@@ -13,6 +13,7 @@ var request = require('request'),
   moment = require('moment'),
   formidable = require('formidable'),
   cloudinary = require('cloudinary'),
+  expressValidator = require('express-validator'),
   flash = require('connect-flash');
 
 require('dotenv').config();
@@ -37,11 +38,10 @@ var gitlab = require('gitlab')({
 
 
 module.exports = {
-
   index: function(req, res) {
     res.render('home', {
-      "projects": req.app.locals.projects,
-      "users": res.app.locals.users,
+      "projects": req.app.locals.projects, //loaded by middleware
+      "users": res.app.locals.users, //loaded by middleware
       "msg": req.flash('info'),
       "status": req.flash('status')
     });
@@ -66,11 +66,23 @@ module.exports = {
     //File uploads
     var form = new formidable.IncomingForm();
 
+
     form.parse(req, function(err, fields, files) {
+      console.log(req.body);
 
-      if (fields.project == "" || fields.title == "" || fields.description == "" || fields.assign == "") {
+      req.checkBody('title', 'Title is required').notEmpty();
+      req.check('project', 'Project is required').notEmpty();
+      req.check('description', 'Description is required').notEmpty();
+      req.check('assign', 'User is required').notEmpty();
 
-        req.flash('info', 'Please complete all the fields');
+      // check the validation object for errors
+      var errors = req.validationErrors();
+
+      console.log(errors);
+
+      if (errors) {
+
+        req.flash('info', errors);
         req.flash('status', "danger");
         res.redirect(303, '/');
 
@@ -123,7 +135,6 @@ module.exports = {
 
               gitlab.issues.create(pid, params, function(resp) {
 
-
                 req.flash('info', "Issue submitted");
                 req.flash('status', "success");
                 res.redirect(303, '/');
@@ -152,6 +163,10 @@ module.exports = {
     });
 
 
+
+
+
+
   },
 
   createMilestone: function(req, res) {
@@ -159,7 +174,6 @@ module.exports = {
     if (req.body.project_id == "" || req.body.milestone_title == "" || req.body.milestone_desc == "" || req.body.due_date == "") {
 
       req.flash('info', 'Please complete all the fields');
-
       return res.json("err");
 
     } else {
@@ -173,11 +187,10 @@ module.exports = {
         due_date: due_date
       };
 
-      gitlab.projects.milestones.add(params.id, params.title, params.description, params.due_date, function(resp) {
-
-        return res.json(resp);
-
-      });
+      gitlab.projects.milestones.add(params.id, params.title, params.description, params.due_date,
+        function(resp) {
+          return res.json(resp);
+        });
     }
   }
 };

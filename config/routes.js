@@ -7,22 +7,23 @@ module.exports.initialize = function (app, router) {
     router.post('/create', controller.createIssue);
     router.post('/milestones', controller.getMilestones);
     router.post('/createmilestone', controller.createMilestone);
+    router.get('/error', function(req, res){
+        res.status(500);
+        
+    });
 
     app.use('/', router);
 
     app.use(function (req, res) {
-        res.type('text/plain');
         res.status(404);
-        res.send('404 - Not Found...');
-
+        res.render('404');
     });
 
 // custom 500 page
     app.use(function (err, req, res, next) {
         console.error(err.stack);
-        res.type('text/plain');
         res.status(500);
-        res.send('500 - Server Error');
+        res.render('500');
     });
 
 };

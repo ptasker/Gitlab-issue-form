@@ -20,7 +20,7 @@ function startServer() {
 /**
 
  Handle clustering
-
+run `node index_cluster.js` to start in cluster mode
  **/
 if (require.main === module) {
     // application run directly; start app server
