@@ -29,9 +29,11 @@
     "method-override": "^2.3.2",
     "moment": "^2.10.6",
     "morgan": "^1.5.1",
+    "multer": "^1.1.0",
     "node-gitlab": "^1.2.1",
     "request": "^2.51.0",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "validator": "^5.1.0"
   },
   "engines": {
     "node": "4.2.x"

@@ -7,9 +7,10 @@ module.exports.initialize = function (app, router) {
     router.post('/create', controller.createIssue);
     router.post('/milestones', controller.getMilestones);
     router.post('/createmilestone', controller.createMilestone);
+    router.get('/gitlab-group', controller.getGitlabGroupID);
     router.get('/error', function(req, res){
         res.status(500);
-        
+
     });
 
     app.use('/', router);

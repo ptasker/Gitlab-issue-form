@@ -13,7 +13,7 @@ var request = require('request'),
   moment = require('moment'),
   formidable = require('formidable'),
   cloudinary = require('cloudinary'),
-  expressValidator = require('express-validator'),
+  validator = require('validator'),
   flash = require('connect-flash');
 
 require('dotenv').config();
@@ -66,21 +66,39 @@ module.exports = {
     //File uploads
     var form = new formidable.IncomingForm();
 
+    var errors = [];
 
     form.parse(req, function(err, fields, files) {
-      console.log(req.body);
 
-      req.checkBody('title', 'Title is required').notEmpty();
-      req.check('project', 'Project is required').notEmpty();
-      req.check('description', 'Description is required').notEmpty();
-      req.check('assign', 'User is required').notEmpty();
 
-      // check the validation object for errors
-      var errors = req.validationErrors();
+      if (fields.title == "") {
+        errors.push({
+          msg: "Please enter a title."
+        })
+      }
 
-      console.log(errors);
+      if (fields.project == "") {
+        errors.push({
+          msg: "Please select a project."
+        })
+      }
 
-      if (errors) {
+      if (fields.description == "") {
+        errors.push({
+          msg: "Please enter a description"
+        })
+      } else if (!validator.isLength(fields.description, {
+          min: 15,
+          max: undefined
+        })) {
+        errors.push({
+          msg: "Please enter longer description"
+        })
+      }
+
+      // console.log(errors);
+
+      if (errors.length > 0) {
 
         req.flash('info', errors);
         req.flash('status', "danger");
@@ -135,7 +153,9 @@ module.exports = {
 
               gitlab.issues.create(pid, params, function(resp) {
 
-                req.flash('info', "Issue submitted");
+                req.flash('info', [{
+                  "msg": "Issue submitted"
+                }]);
                 req.flash('status', "success");
                 res.redirect(303, '/');
 
@@ -150,23 +170,19 @@ module.exports = {
             console.log("Error uploading to cloudinary.");
           }
 
-        } else {
+        } else { //no image uploaded
 
           gitlab.issues.create(pid, params, function(resp) {
 
-            req.flash('info', "Issue submitted");
+            req.flash('info', [{
+              "msg": "Issue submitted"
+            }]);
             res.redirect(303, '/');
           });
         }
 
       }
     });
-
-
-
-
-
-
   },
 
   createMilestone: function(req, res) {
@@ -192,5 +208,13 @@ module.exports = {
           return res.json(resp);
         });
     }
+  },
+
+  getGitlabGroupID: function(req, res) {
+    gitlab.groups.all({}, function(groups) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(groups);
+      console.log(groups);
+    });
   }
 };

@@ -38,11 +38,11 @@ module.exports = function(app) {
   app.use(bodyParser.urlencoded({
     extended: false
   }));
+  app.use(expressValidator([]));
 
   // parse application/json
   app.use(bodyParser.json());
 
-  app.use(expressValidator([]));
 
   app.use(flash());
 
