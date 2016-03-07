@@ -12,8 +12,8 @@ Todos:
 
 There's a couple things needed to get this fully up and running
 
-1. Get a Gitlab account and grab your API key [https://www.safaribooksonline.com/library/view/gitlab-cookbook/9781783986842/ch06s05.html](https://www.safaribooksonline.com/library/view/gitlab-cookbook/9781783986842/ch06s05.html)
-2. Get a Cloudinary account and grab your api details (if you want to upload images)
+1. Get a Gitlab account and grab your [API key](https://www.safaribooksonline.com/library/view/gitlab-cookbook/9781783986842/ch06s05.html)
+2. Get a [Cloudinary account](https://cloudinary.com) and grab your api details (if you want to upload images)
 3. Create a .env file in the root of your project, with the follow up values:
 
 ```
